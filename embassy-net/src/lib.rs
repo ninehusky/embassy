@@ -942,7 +942,9 @@ impl Inner {
         self.state_waker.wake();
     }
 
-    #[flux_rs::ignore(reason = "flux-infer/src/infer.rs:416 -- ICE: UnsolvedEvar (poll_fn closure)")]
+    // Same panic site and error variant as the 12 `poll_fn` ignores, but this body
+    // contains no `poll_fn`; the trigger has not been isolated yet.
+    #[flux_rs::ignore(reason = "flux-infer/src/infer.rs:416 -- ICE: UnsolvedEvar (trigger not isolated)")]
     fn poll<D: Driver>(&mut self, cx: &mut Context<'_>, driver: &mut D) {
         self.waker.register(cx.waker());
 

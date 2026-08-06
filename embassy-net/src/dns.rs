@@ -57,7 +57,9 @@ impl<'a> DnsSocket<'a> {
     }
 
     /// Make a query for a given name and return the corresponding IP addresses.
-    #[flux_rs::ignore(reason = "flux-infer/src/infer.rs:416 -- ICE: UnsolvedEvar (poll_fn closure)")]
+    // A *different* ICE from the other 13 ignores in this crate, and only reachable
+    // with `--features dns`, which the current verification feature set omits.
+    #[flux_rs::ignore(reason = "ena-0.14.3/src/snapshot_vec.rs:199 -- ICE: index out of bounds (len 0, index 0)")]
     pub async fn query(
         &self,
         name: &str,
