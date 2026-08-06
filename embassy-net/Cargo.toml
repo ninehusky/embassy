@@ -136,3 +136,16 @@ managed = { version = "0.8.0", default-features = false, features = [ "map" ] }
 heapless = { version = "0.9", default-features = false }
 embedded-nal-async = "0.9.0"
 document-features = "0.2.7"
+
+flux-rs = { path = "../../flux/lib/flux-rs" }
+
+[package.metadata.flux]
+enabled = true
+cache = true
+include = ["src/**/*.rs"]
+
+# Point at the local xarxa variant (third_party/xarxa is a symlink flipped between
+# measurement variants) so that `cargo flux` sees the flux-annotated xarxa rather than
+# the pristine registry checkout. Mirrors examples/nrf52840/Cargo.toml.
+[patch."https://github.com/embassy-rs/xarxa"]
+xarxa = { path = "../third_party/xarxa" }
