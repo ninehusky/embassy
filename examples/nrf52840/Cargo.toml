@@ -37,15 +37,26 @@ num-integer = { version = "0.1.45", default-features = false }
 microfft = "0.5.0"
 portable-atomic = "1"
 
-# No [package.metadata.flux] here yet. Flux's sysroot (~/.flux) is host-only -- it
-# has no lib/rustlib/thumbv7em-none-eabi -- so `cargo flux check` in this workspace
-# dies with `can't find crate for core` before reaching any of our code. Enabling
-# Flux on this binary needs a Flux sysroot cross-built for thumbv7em-none-eabi.
-# Until then the panic-tracing loop runs against embassy-net directly, with this
-# binary's exact feature set:
+flux-rs = { path = "../../third_party/flux/lib/flux-rs" }
+
+# Run with:
 #
-#   cd ../../embassy-net && cargo flux check -p embassy-net \
-#     --features "defmt,tcp,dhcpv4,medium-ethernet,udp,medium-ieee802154,proto-ipv6"
+#   CARGO_INCREMENTAL=0 cargo flux check
+#
+# Two one-time prerequisites:
+#   * `rustup target add thumbv7em-none-eabi --toolchain nightly-2026-02-05`.
+#     cargo-flux forces its own toolchain, compiled in from Flux's
+#     rust-toolchain.toml, which does not inherit this repo's `targets` list, so
+#     without this every dependency fails with `can't find crate for core`.
+#   * CARGO_INCREMENTAL=0. flux-driver rejects `-C incremental`, and cargo-flux's
+#     `[profile.flux] incremental = false` does not reach build-script units.
+[package.metadata.flux]
+enabled = true
+cache = true
+# The panic-tracing loop targets this binary: build it, find a panic in the
+# disassembly, trace it back through embassy-net into xarxa. Checking the other
+# bins here would only add noise.
+include = ["src/bin/usb_ethernet.rs"]
 
 [profile.release]
 debug = 2
