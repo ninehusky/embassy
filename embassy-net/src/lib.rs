@@ -583,7 +583,7 @@ impl<'d> Stack<'d> {
         self.wait(|| !self.is_config_up()).await
     }
 
-    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
+    #[flux_rs::ignore(reason = "flux-infer/src/infer.rs:416 -- ICE: UnsolvedEvar (poll_fn closure)")]
     fn wait<'a>(&'a self, mut predicate: impl FnMut() -> bool + 'a) -> impl Future<Output = ()> + 'a {
         poll_fn(move |cx| {
             if predicate() {
@@ -942,9 +942,7 @@ impl Inner {
         self.state_waker.wake();
     }
 
-    // Flux ICEs (`UnsolvedEvar`) inside this function's closures; `trusted` does not
-    // suppress it, `ignore` does. See flux-infer/src/infer.rs:416.
-    #[flux_rs::ignore]
+    #[flux_rs::ignore(reason = "flux-infer/src/infer.rs:416 -- ICE: UnsolvedEvar (poll_fn closure)")]
     fn poll<D: Driver>(&mut self, cx: &mut Context<'_>, driver: &mut D) {
         self.waker.register(cx.waker());
 

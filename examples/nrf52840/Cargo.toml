@@ -65,13 +65,3 @@ debug = 2
 build = [
   { target = "thumbv7em-none-eabi", artifact-dir = "out/examples/nrf52840" }
 ]
-
-# No [patch] section. xarxa used to need one because embassy-net declared it as a
-# git dependency; embassy-net now path-depends on the third_party/xarxa submodule
-# directly, so the patch was dead and cargo warned about it on every build.
-#
-# defmt-rtt used to be patched to third_party/defmt-rtt, a local copy carrying
-# `--cfg fluxopt="..."` arms for the panic-cliff size study. That study is moving
-# to its own repo, and the copy lives in a gitignored directory, so the patch made
-# this example unbuildable from a fresh clone. The copy is untouched on disk if it
-# is ever wanted back.

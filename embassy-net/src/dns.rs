@@ -57,7 +57,7 @@ impl<'a> DnsSocket<'a> {
     }
 
     /// Make a query for a given name and return the corresponding IP addresses.
-    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
+    #[flux_rs::ignore(reason = "flux-infer/src/infer.rs:416 -- ICE: UnsolvedEvar (poll_fn closure)")]
     pub async fn query(
         &self,
         name: &str,
