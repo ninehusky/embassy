@@ -79,6 +79,7 @@ impl<'a> TcpReader<'a> {
     /// (see [`may_recv()`](TcpSocket::may_recv)), and there is some pending data in the receive buffer.
     ///
     /// This is the equivalent of [read](#method.read), without buffering any data.
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     pub fn wait_read_ready(&self) -> impl Future<Output = ()> + '_ {
         poll_fn(move |cx| self.io.poll_read_ready(cx))
     }
@@ -166,6 +167,7 @@ impl<'a> TcpWriter<'a> {
     /// (see [`may_send()`](TcpSocket::may_send)), and the transmit buffer is not full.
     ///
     /// This is the equivalent of [write](#method.write), without sending any data.
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     pub fn wait_write_ready(&self) -> impl Future<Output = ()> + '_ {
         poll_fn(move |cx| self.io.poll_write_ready(cx))
     }
@@ -474,6 +476,7 @@ impl<'a> TcpSocket<'a> {
     /// (see [may_recv](#method.may_recv)), and there is some pending data in the receive buffer.
     ///
     /// This is the equivalent of [read](#method.read), without buffering any data.
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     pub fn wait_read_ready(&self) -> impl Future<Output = ()> + '_ {
         poll_fn(move |cx| self.io.poll_read_ready(cx))
     }
@@ -504,6 +507,7 @@ impl<'a> TcpSocket<'a> {
     /// (see [may_send](#method.may_send)), and the transmit buffer is not full.
     ///
     /// This is the equivalent of [write](#method.write), without sending any data.
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     pub fn wait_write_ready(&self) -> impl Future<Output = ()> + '_ {
         poll_fn(move |cx| self.io.poll_write_ready(cx))
     }
@@ -728,6 +732,7 @@ impl<'d> TcpIo<'d> {
         })
     }
 
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     fn read<'s>(&'s mut self, buf: &'s mut [u8]) -> impl Future<Output = Result<usize, Error>> + 's {
         poll_fn(|cx| {
             // CAUTION: xarxa semantics around EOF are different to what you'd expect
@@ -779,6 +784,7 @@ impl<'d> TcpIo<'d> {
         })
     }
 
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     fn write<'s>(&'s mut self, buf: &'s [u8]) -> impl Future<Output = Result<usize, Error>> + 's {
         poll_fn(|cx| {
             self.with_mut(|s, _| match s.send_slice(buf) {
@@ -914,6 +920,7 @@ impl<'d> TcpIo<'d> {
         })
     }
 
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     fn flush(&mut self) -> impl Future<Output = Result<(), Error>> + '_ {
         poll_fn(|cx| {
             self.with_mut(|s, _| {

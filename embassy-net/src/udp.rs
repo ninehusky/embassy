@@ -165,6 +165,7 @@ impl<'a> UdpSocket<'a> {
     ///
     /// A socket is readable when a packet has been received, or when there are queued packets in
     /// the buffer.
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     pub fn wait_recv_ready(&self) -> impl Future<Output = ()> + '_ {
         poll_fn(move |cx| self.poll_recv_ready(cx))
     }
@@ -192,6 +193,7 @@ impl<'a> UdpSocket<'a> {
     /// This method will wait until a datagram is received.
     ///
     /// Returns the number of bytes received and the remote endpoint.
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     pub fn recv_from<'s>(
         &'s self,
         buf: &'s mut [u8],
@@ -286,6 +288,7 @@ impl<'a> UdpSocket<'a> {
     ///
     /// A socket becomes writable when there is space in the buffer, from initial memory or after
     /// dispatching datagrams on a full buffer.
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     pub fn wait_send_ready(&self) -> impl Future<Output = ()> + '_ {
         poll_fn(|cx| self.poll_send_ready(cx))
     }
@@ -483,6 +486,7 @@ impl<'a> UdpSocket<'a> {
     /// Flush the socket.
     ///
     /// This method will wait until the socket is flushed.
+    #[flux_rs::ignore] // Flux ICE: UnsolvedEvar
     pub fn flush(&mut self) -> impl Future<Output = ()> + '_ {
         poll_fn(|cx| {
             self.with_mut(|s, _| {
