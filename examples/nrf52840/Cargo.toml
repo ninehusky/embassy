@@ -39,18 +39,6 @@ portable-atomic = "1"
 
 flux-rs = { path = "../../third_party/flux/lib/flux-rs" }
 
-# Run with:
-#
-#   cargo flux check
-#
-# One one-time prerequisite:
-#   * `rustup target add thumbv7em-none-eabi --toolchain nightly-2026-02-05`.
-#     cargo-flux forces its own toolchain, compiled in from Flux's
-#     rust-toolchain.toml, which does not inherit this repo's `targets` list, so
-#     without this every dependency fails with `can't find crate for core`.
-#
-# The `-C incremental` problem is handled by `incremental = false` in
-# .cargo/config.toml; see the comment there.
 [package.metadata.flux]
 enabled = true
 cache = true
