@@ -138,9 +138,6 @@ heapless = { version = "0.9", default-features = false }
 embedded-nal-async = "0.9.0"
 document-features = "0.2.7"
 
-# Flux attribute macros, vendored as the `third_party/flux` git submodule
-# (ninehusky/flux). third_party/xarxa's own manifest refers to it as `../flux/lib/flux-rs`,
-# so the two submodules must stay siblings under third_party/.
 flux-rs = { path = "../third_party/flux/lib/flux-rs" }
 
 [package.metadata.flux]
