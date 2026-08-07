@@ -1,0 +1,8 @@
+[submodule "third_party/xarxa"]
+	path = third_party/xarxa
+	url = https://github.com/ninehusky/xarxa.git
+	branch = remove-explicit-panics
+[submodule "third_party/flux"]
+	path = third_party/flux
+	url = https://github.com/ninehusky/flux.git
+	branch = local-wip-snapshot

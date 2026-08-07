@@ -37,6 +37,16 @@ num-integer = { version = "0.1.45", default-features = false }
 microfft = "0.5.0"
 portable-atomic = "1"
 
+flux-rs = { path = "../../third_party/flux/lib/flux-rs" }
+
+[package.metadata.flux]
+enabled = true
+cache = true
+# The panic-tracing loop targets this binary: build it, find a panic in the
+# disassembly, trace it back through embassy-net into xarxa. Checking the other
+# bins here would only add noise.
+include = ["src/bin/usb_ethernet.rs"]
+
 [profile.release]
 debug = 2
 

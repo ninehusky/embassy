@@ -35,9 +35,10 @@ embassy-embedded-hal = { version = "0.6.0", path = "../embassy-embedded-hal" }
 embassy-net-driver-channel = { version = "0.4.0", path = "../embassy-net-driver-channel", optional=true}
 stm32-bindings = { version = "0.2.2", optional=true, default-features = false }
 
-xarxa = { 
-    git = "https://github.com/embassy-rs/xarxa",
-    rev = "1f332ac32cc33d86aefc8e1c1a9749b93234a6de",
+# Must resolve to the same xarxa as embassy-net (the `third_party/xarxa` submodule);
+# examples/stm32wb and examples/stm32wba depend on both crates at once.
+xarxa = {
+    path = "../third_party/xarxa",
     optional = true,
     default-features = false,
 }

@@ -4,6 +4,12 @@ runner = "probe-rs run --chip nRF52840_xxAA"
 
 [build]
 target = "thumbv7em-none-eabi"
+# `flux-driver` rejects `-C incremental`. cargo-flux already sets
+# `[profile.flux] incremental = false`, but cargo does not honour `incremental`
+# from a profile for build-script or path-dependency units, so `cargo flux check`
+# dies on the first one. `build.incremental` is the same knob `CARGO_INCREMENTAL`
+# sets and it is respected, so this replaces the env var in the docs.
+incremental = false
 
 [env]
 DEFMT_LOG = "trace"

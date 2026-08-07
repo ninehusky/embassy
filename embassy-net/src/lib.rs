@@ -463,7 +463,10 @@ fn parse_dhcp_ntp_servers(config: &dhcpv4::Config) -> Vec<Ipv4Address, 4> {
 fn to_xarxa_hardware_address(addr: driver::HardwareAddress) -> (HardwareAddress, Medium) {
     match addr {
         #[cfg(feature = "medium-ethernet")]
-        driver::HardwareAddress::Ethernet(eth) => (HardwareAddress::Ethernet(EthernetAddress(eth)), Medium::Ethernet),
+        driver::HardwareAddress::Ethernet(eth) => (
+            HardwareAddress::Ethernet(EthernetAddress::from_octets(eth)),
+            Medium::Ethernet,
+        ),
         #[cfg(feature = "medium-ieee802154")]
         driver::HardwareAddress::Ieee802154(ieee) => (
             HardwareAddress::Ieee802154(Ieee802154Address::Extended(ieee)),
@@ -580,6 +583,7 @@ impl<'d> Stack<'d> {
         self.wait(|| !self.is_config_up()).await
     }
 
+    #[flux_rs::ignore(reason = "flux-infer/src/infer.rs:416 -- ICE: UnsolvedEvar (poll_fn closure)")]
     fn wait<'a>(&'a self, mut predicate: impl FnMut() -> bool + 'a) -> impl Future<Output = ()> + 'a {
         poll_fn(move |cx| {
             if predicate() {
@@ -938,6 +942,9 @@ impl Inner {
         self.state_waker.wake();
     }
 
+    // Same panic site and error variant as the 12 `poll_fn` ignores, but this body
+    // contains no `poll_fn`; the trigger has not been isolated yet.
+    #[flux_rs::ignore(reason = "flux-infer/src/infer.rs:416 -- ICE: UnsolvedEvar (trigger not isolated)")]
     fn poll<D: Driver>(&mut self, cx: &mut Context<'_>, driver: &mut D) {
         self.waker.register(cx.waker());
 

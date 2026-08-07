@@ -2,7 +2,11 @@ target
 target_ci
 target_ci_stable
 Cargo.lock
-third_party
+# third_party holds local, untracked vendored copies (defmt-rtt, xarxa measurement
+# variants). The two submodules below are tracked; everything else stays ignored.
+/third_party/*
+!/third_party/xarxa
+!/third_party/flux
 webroot
 /Cargo.toml
 out/

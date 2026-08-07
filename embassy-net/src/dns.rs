@@ -57,6 +57,8 @@ impl<'a> DnsSocket<'a> {
     }
 
     /// Make a query for a given name and return the corresponding IP addresses.
+    // Flux note: the ICE is only there if you have `--features dns`
+    #[flux_rs::ignore(reason = "ena-0.14.3/src/snapshot_vec.rs:199 -- ICE: index out of bounds (len 0, index 0)")]
     pub async fn query(
         &self,
         name: &str,
